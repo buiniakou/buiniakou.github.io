@@ -3,7 +3,7 @@ body
 font-family: Helvetica;
 font-size: 13px;
 color: #F1F5F8;
-background-image: url("images/background.png");
+background-image: url("background.png");
 background-repeat: repeat-x;
 height:1000px;
 }
@@ -134,7 +134,7 @@ margin-top:60px;
 padding-top:63px;
 padding-left:30px;
 padding-right:30px;
-background-image:url(images/header.png);
+background-image:url(header.png);
 background-repeat:no-repeat;
 height:122px;
 width:753px;
