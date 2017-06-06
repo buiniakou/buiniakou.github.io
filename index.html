@@ -30,14 +30,6 @@
 			textElem.appendChild(textNode);
 			var curFontSize = 24;  // Do not change
 			
-			if (getHours > 12) {
-			getHours = getHours - 12;
-			}
-
-			// 0 AM and 0 PM should read as 12
-			if (getHours === 0) {
-			    getHours = 12;    
-			}
 			
 			function updateClock() {
 				var d = new Date();
