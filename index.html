@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+    .myclass {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+</style>
 <script>
 function startTime() {
     var today = new Date();
@@ -11,7 +18,7 @@ function startTime() {
     m = checkTime(m);
     s = checkTime(s);
     document.getElementById('txt').innerHTML =
-    h + ":" + m + ":" + s;
+    h + ":" + m;
     var t = setTimeout(startTime, 500);
 }
 function checkTime(i) {
@@ -22,8 +29,7 @@ function checkTime(i) {
 </head>
 
 <body onload="startTime()">
-
-<div id="txt"></div>
+<div class="myclass"id="txt"></div>
 
 </body>
 </html>
