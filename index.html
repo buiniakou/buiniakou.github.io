@@ -1,119 +1,349 @@
-<html style="display:block; height:100%; margin:0; padding:0">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-		<title>Clock</title>
-		<style type="text/css">
-			/* Customizable font and colors */
-			html {
-				background: #222222;
-			}
-			#clocktext {
-				font-family:sans-serif;
-				font-weight: bold;
-				color: #FFFFFF;
-			}
-            #Box {
-                width:30px;
-                height:30px;
-                background-color:#222222;
-                border:1px solid white;
-            }
-            #Box2 {
-                width:30px;
-                height:30px;
-                background-color:lightpink;
-                border:1px solid white;
-            }
-            #Box3 {
-                width:30px;
-                height:30px;
-                background-color:lightblue;
-                border:1px solid white;
-            }
-            #Box4 {
-                width:30px;
-                height:30px;
-                background-color:ghostwhite;
-                border:1px solid white;
-            }
-            #left {
-                margin-left: 10px;
-            }
-		</style>
-	</head>
-	
-	<body style="display:table; width:100%; height:100%; margin:0; padding:0">
-                
-        <div style="display:table-cell; width:100%; height:100%; text-align:center; vertical-align:middle">
-			<span id="clocktext" style="font-size:24pt; font-kerning:none"></span>
-        </div>
-        <div id="left">
-            <div id="Box" onclick="changeColor()"></div><br/>
-            <div id="Box2" float="left" onclick="changeColor2()"></div><br/>
-            <div id="Box3" float="left" onclick="changeColor3()"></div><br/>
-            <div id="Box4" float="left" onclick="changeColor4()"></div><br/>
-        </div>
-		
-		<script type="text/javascript">
-			"use strict";
-			
-			var textElem = document.getElementById("clocktext");
-			var textNode = document.createTextNode("");
-			textElem.appendChild(textNode);
-			var curFontSize = 24;  // Do not change
-			
-			
-			function updateClock() {
-				var d = new Date();
-				var s = "";
-				s += (10 > d.getHours  () ? "0" : "") + d.getHours  () + ":";
-				s += (10 > d.getMinutes() ? "0" : "") + d.getMinutes() + ":";
-				s += (10 > d.getSeconds() ? "0" : "") + d.getSeconds();
-				textNode.data = s;
-				setTimeout(updateClock, 1000 - d.getTime() % 1000 + 20);
-			}
-			
-			function updateTextSize() {
-				var targetWidth = 0.9;  // Proportion of full screen width
-				for (var i = 0; 3 > i; i++) {  // Iterate for better better convergence
-					var newFontSize = textElem.parentNode.offsetWidth * targetWidth / textElem.offsetWidth * curFontSize;
-					textElem.style.fontSize = newFontSize.toFixed(3) + "pt";
-					curFontSize = newFontSize;
-				}
-			}
-			
-			updateClock();
-			updateTextSize();
-			window.addEventListener("resize", updateTextSize);
-            
-            
-            
-            
-            function changeColor()
-    {
-  document.body.style.background = '#222222';
-  document.getElementById("clocktext").style.color = "ghostwhite";
-    };
-               
-            function changeColor2()
-    {
-  document.body.style.background = 'lightpink';
-  document.getElementById("clocktext").style.color = "ghostwhite";
-    };
-            
-            function changeColor3()
-    {
-  document.body.style.background = 'lightblue';
-  document.getElementById("clocktext").style.color = "ghostwhite";
-    };
-            function changeColor4()
-    {
-  document.body.style.background = 'ghostwhite';
-  document.getElementById("clocktext").style.color = "black";
-    };
-       
-            
-		</script>
-	</body>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clock</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Lora:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; }
+body { font-family: 'Inter', system-ui, sans-serif; background: #111; display: flex; align-items: center; justify-content: center; padding: 1.5rem; min-height: 100vh; }
 
+.card { width: 100%; max-width: 680px; border-radius: 16px; overflow: hidden; }
+
+/* Controls */
+.ctrl { display: flex; align-items: center; gap: 5px; padding: 10px 14px; flex-wrap: wrap; }
+.fb, .tb { padding: 5px 13px; border-radius: 20px; border: 1px solid transparent; background: transparent; font-size: 12px; cursor: pointer; letter-spacing: 0.02em; transition: background 0.15s, color 0.15s; font-family: 'Inter', system-ui; }
+.div-sep { width: 1px; height: 18px; margin: 0 3px; }
+
+/* Face container */
+.display { min-height: 300px; display: flex; align-items: center; justify-content: center; padding: 2rem 1.5rem; }
+.face { display: none; align-items: center; justify-content: center; flex-direction: column; width: 100%; }
+.face.on { display: flex; }
+
+/* DIGITAL */
+.dig-time { font-size: clamp(52px, 11vw, 108px); font-weight: 500; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.dig-ampm { font-size: clamp(14px, 3vw, 24px); font-weight: 400; opacity: 0.42; margin-top: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+.dig-date { font-size: 12px; opacity: 0.35; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 14px; }
+
+/* ANALOG */
+.a-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+/* FLIP */
+.flip-row { display: flex; align-items: center; gap: 5px; }
+.flip-group { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.flip-cards { display: flex; gap: 3px; }
+.flip-card { border-radius: 7px; display: flex; align-items: center; justify-content: center; width: 52px; height: 70px; overflow: hidden; }
+.flip-n { font-size: 52px; font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; }
+@keyframes flipit { 0%{transform:scaleY(1);opacity:1} 45%{transform:scaleY(0.04);opacity:0.3} 55%{transform:scaleY(0.04);opacity:0.3} 100%{transform:scaleY(1);opacity:1} }
+.flip-card.pop .flip-n { animation: flipit 0.32s cubic-bezier(0.4,0,0.2,1); }
+.flip-lbl { font-size: 10px; opacity: 0.3; letter-spacing: 0.1em; text-transform: uppercase; }
+.flip-sep { font-size: 46px; font-weight: 300; opacity: 0.3; margin-bottom: 14px; line-height: 1; }
+.flip-ampm { font-size: 13px; opacity: 0.38; letter-spacing: 0.1em; margin-top: 8px; text-transform: uppercase; }
+
+/* BINARY */
+.bin-table { border-collapse: separate; border-spacing: 0; }
+.bin-table td { padding: 5px 5px; vertical-align: middle; }
+.bin-lbl { font-size: 11px; opacity: 0.32; letter-spacing: 0.06em; text-align: right; padding-right: 12px !important; }
+.bin-val { font-size: 12px; opacity: 0.35; font-variant-numeric: tabular-nums; padding-left: 12px !important; letter-spacing: 0.04em; }
+.bit { width: 18px; height: 18px; border-radius: 50%; transition: background 0.2s, opacity 0.2s; }
+.bit.on { opacity: 1; }
+.bit.off { opacity: 0.12; }
+.bit-pow { font-size: 9px; opacity: 0.25; text-align: center; padding: 1px 5px !important; }
+.bin-dots { display: flex; gap: 6px; align-items: center; }
+
+/* WORD */
+.word-txt { font-size: clamp(22px, 4.5vw, 38px); font-weight: 400; text-align: center; line-height: 1.45; max-width: 420px; font-family: 'Lora', Georgia, serif; }
+.word-exact { font-size: 12px; opacity: 0.32; margin-top: 14px; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; }
+
+/* Theme tray */
+.tray { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 0 14px; flex-wrap: wrap; }
+.sw { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.15s, border-color 0.15s; flex-shrink: 0; }
+.sw:hover { transform: scale(1.2); }
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <div class="ctrl" id="ctrl">
+    <button class="fb" id="fb-digital" onclick="setFace('digital')">Digital</button>
+    <button class="fb" id="fb-analog"  onclick="setFace('analog')">Analog</button>
+    <button class="fb" id="fb-flip"    onclick="setFace('flip')">Flip</button>
+    <button class="fb" id="fb-binary"  onclick="setFace('binary')">Binary</button>
+    <button class="fb" id="fb-word"    onclick="setFace('word')">Word</button>
+    <div class="div-sep" id="dsep"></div>
+    <button class="tb" id="tb12h"  onclick="tog12h()">12h</button>
+    <button class="tb" id="tbsec"  onclick="togSec()">Secs</button>
+    <button class="tb" id="tbsmo"  onclick="togSmooth()">Smooth</button>
+  </div>
+
+  <div class="display">
+
+    <div class="face" id="face-digital">
+      <div class="dig-time" id="d-time">00:00</div>
+      <div class="dig-ampm" id="d-ampm"></div>
+      <div class="dig-date" id="d-date"></div>
+    </div>
+
+    <div class="face" id="face-analog">
+      <div class="a-wrap">
+        <svg id="asvg" viewBox="0 0 200 200" width="240" height="240" role="img" aria-label="Analog clock">
+          <circle cx="100" cy="100" r="97" fill="none" id="a-ring" stroke-width="1" stroke="rgba(200,200,200,0.2)"/>
+          <g id="a-ticks"></g>
+          <g id="a-nums"></g>
+          <line id="a-h" x1="100" y1="100" x2="100" y2="52" stroke="#f0f0f0" stroke-width="5.5" stroke-linecap="round"/>
+          <line id="a-m" x1="100" y1="106" x2="100" y2="30" stroke="#f0f0f0" stroke-width="3.5" stroke-linecap="round"/>
+          <line id="a-s" x1="100" y1="118" x2="100" y2="24" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="100" cy="100" r="5" fill="#f0f0f0" id="a-dot"/>
+          <circle cx="100" cy="100" r="2.5" fill="#ef4444"/>
+        </svg>
+        <div class="dig-date" id="a-date"></div>
+      </div>
+    </div>
+
+    <div class="face" id="face-flip">
+      <div class="flip-row">
+        <div class="flip-group">
+          <div class="flip-cards">
+            <div class="flip-card" id="fc-h0"><div class="flip-n" id="fv-h0">0</div></div>
+            <div class="flip-card" id="fc-h1"><div class="flip-n" id="fv-h1">0</div></div>
+          </div>
+          <div class="flip-lbl">hours</div>
+        </div>
+        <div class="flip-sep">:</div>
+        <div class="flip-group">
+          <div class="flip-cards">
+            <div class="flip-card" id="fc-m0"><div class="flip-n" id="fv-m0">0</div></div>
+            <div class="flip-card" id="fc-m1"><div class="flip-n" id="fv-m1">0</div></div>
+          </div>
+          <div class="flip-lbl">mins</div>
+        </div>
+        <div class="flip-sep" id="fsep">:</div>
+        <div class="flip-group" id="fsg">
+          <div class="flip-cards">
+            <div class="flip-card" id="fc-s0"><div class="flip-n" id="fv-s0">0</div></div>
+            <div class="flip-card" id="fc-s1"><div class="flip-n" id="fv-s1">0</div></div>
+          </div>
+          <div class="flip-lbl">secs</div>
+        </div>
+      </div>
+      <div class="flip-ampm" id="f-ampm"></div>
+    </div>
+
+    <div class="face" id="face-binary">
+      <table class="bin-table">
+        <thead>
+          <tr>
+            <td></td>
+            <td><div class="bin-dots" id="bin-pow"></div></td>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="bin-lbl">H</td><td><div class="bin-dots" id="bd-h"></div></td><td class="bin-val" id="bv-h">00</td></tr>
+          <tr><td class="bin-lbl">M</td><td><div class="bin-dots" id="bd-m"></div></td><td class="bin-val" id="bv-m">00</td></tr>
+          <tr id="bin-s-row"><td class="bin-lbl">S</td><td><div class="bin-dots" id="bd-s"></div></td><td class="bin-val" id="bv-s">00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="face" id="face-word">
+      <div class="word-txt" id="w-txt">loading…</div>
+      <div class="word-exact" id="w-exact"></div>
+    </div>
+
+  </div>
+
+  <div class="tray" id="tray"></div>
+</div>
+
+<script>
+const THEMES = [
+  { n:'Midnight', bg:'#111111', text:'#f0f0f0', card:'#1a1a1a', dot:'#2a78d6', sep:'rgba(255,255,255,0.07)', lt:false },
+  { n:'Slate',    bg:'#1a2740', text:'#c8d8f0', card:'#22324e', dot:'#4a9ef5', sep:'rgba(255,255,255,0.07)', lt:false },
+  { n:'Forest',   bg:'#0f2318', text:'#9fe1cb', card:'#183326', dot:'#1d9e75', sep:'rgba(255,255,255,0.07)', lt:false },
+  { n:'Plum',     bg:'#1a0f2e', text:'#d0c4f8', card:'#251844', dot:'#9085e9', sep:'rgba(255,255,255,0.07)', lt:false },
+  { n:'Ember',    bg:'#1f1008', text:'#f5c47a', card:'#2e190c', dot:'#ef9f27', sep:'rgba(255,255,255,0.07)', lt:false },
+  { n:'Graphite', bg:'#2a2a28', text:'#d8d7d0', card:'#363634', dot:'#b4b2a9', sep:'rgba(255,255,255,0.07)', lt:false },
+  { n:'Rose',     bg:'#fbeaf0', text:'#72243e', card:'#f4c0d1', dot:'#d4537e', sep:'rgba(0,0,0,0.07)',       lt:true  },
+  { n:'Sky',      bg:'#e6f1fb', text:'#0c447c', card:'#b5d4f4', dot:'#2a78d6', sep:'rgba(0,0,0,0.07)',       lt:true  },
+  { n:'Paper',    bg:'#f5f4ef', text:'#2c2c2a', card:'#e5e4de', dot:'#5f5e5a', sep:'rgba(0,0,0,0.07)',       lt:true  },
+  { n:'Sage',     bg:'#eaf3de', text:'#274f0a', card:'#c0dd97', dot:'#3b6d11', sep:'rgba(0,0,0,0.07)',       lt:true  },
+];
+
+const S = { face:'digital', h12:true, secs:true, smooth:false, theme:0 };
+const q = id => document.getElementById(id);
+
+/* Build analog tick marks */
+(function() {
+  const tg = q('a-ticks'), ng = q('a-nums');
+  for (let i=0; i<60; i++) {
+    const a = i/60*2*Math.PI, major = i%5===0;
+    const r1=major?83:91, r2=97;
+    const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',100+r1*Math.sin(a)); l.setAttribute('y1',100-r1*Math.cos(a));
+    l.setAttribute('x2',100+r2*Math.sin(a)); l.setAttribute('y2',100-r2*Math.cos(a));
+    l.setAttribute('stroke-width',major?'2':'1'); l.setAttribute('class','a-tick');
+    tg.appendChild(l);
+  }
+  for (let i=1; i<=12; i++) {
+    const a=i/12*2*Math.PI, t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',100+72*Math.sin(a)); t.setAttribute('y',100-72*Math.cos(a));
+    t.setAttribute('text-anchor','middle'); t.setAttribute('dominant-baseline','central');
+    t.setAttribute('font-size','11'); t.setAttribute('font-family','Inter,system-ui');
+    t.setAttribute('class','a-num'); t.textContent=i; ng.appendChild(t);
+  }
+})();
+
+/* Build binary dot containers */
+(function() {
+  const BITS = 6;
+  const pw = q('bin-pow');
+  for (let i=BITS-1; i>=0; i--) {
+    const s=document.createElement('div'); s.className='bit-pow';
+    s.style.cssText='width:18px;text-align:center;font-size:9px;opacity:0.25;';
+    s.textContent=Math.pow(2,i); pw.appendChild(s);
+  }
+  ['h','m','s'].forEach(r => {
+    const c=q('bd-'+r);
+    for (let i=BITS-1; i>=0; i--) {
+      const d=document.createElement('div'); d.className='bit off'; d.id='b-'+r+'-'+i; c.appendChild(d);
+    }
+  });
+})();
+
+/* Build theme swatches */
+(function() {
+  const tray=q('tray');
+  THEMES.forEach((t,i) => {
+    const s=document.createElement('div'); s.className='sw'; s.style.background=t.bg;
+    if (t.lt) s.style.outline='1px solid rgba(0,0,0,0.12)';
+    s.title=t.n; s.onclick=()=>applyTheme(i); tray.appendChild(s);
+  });
+})();
+
+function applyTheme(i) {
+  S.theme=i; const t=THEMES[i];
+  document.body.style.background=t.bg;
+  const card=q('card'); card.style.background=t.card; card.style.color=t.text;
+  const ctrl=q('ctrl');
+  ctrl.style.borderBottom='1px solid '+t.sep;
+  ctrl.style.background=t.lt?'rgba(0,0,0,0.04)':'rgba(255,255,255,0.04)';
+  const ab=t.lt?'rgba(0,0,0,0.1)':'rgba(255,255,255,0.13)';
+  const bc=t.lt?'rgba(0,0,0,0.18)':'rgba(255,255,255,0.22)';
+  document.querySelectorAll('.fb,.tb').forEach(el => { el.style.color=t.text; el.style.borderColor=bc; el.style.background='transparent'; });
+  ['digital','analog','flip','binary','word'].forEach(f => {
+    q('fb-'+f).style.background=S.face===f?ab:'transparent';
+  });
+  q('tb12h').style.background=S.h12?ab:'transparent';
+  q('tbsec').style.background=S.secs?ab:'transparent';
+  q('tbsmo').style.background=S.smooth?ab:'transparent';
+  q('dsep').style.background=t.sep;
+  q('tray').style.borderTop='1px solid '+t.sep;
+  document.querySelectorAll('.sw').forEach((s,idx) => {
+    s.style.borderColor=idx===i?(t.lt?'rgba(0,0,0,0.5)':'rgba(255,255,255,0.9)'):'transparent';
+    s.style.transform=idx===i?'scale(1.15)':'';
+  });
+  const hc=t.text, tc=t.lt?'rgba(0,0,0,0.2)':'rgba(200,200,200,0.3)', nc=t.lt?'rgba(0,0,0,0.32)':'rgba(200,200,200,0.48)';
+  q('a-h').setAttribute('stroke',hc); q('a-m').setAttribute('stroke',hc); q('a-dot').setAttribute('fill',hc);
+  q('a-ring').setAttribute('stroke',tc);
+  document.querySelectorAll('.a-tick').forEach(el=>el.setAttribute('stroke',tc));
+  document.querySelectorAll('.a-num').forEach(el=>el.setAttribute('fill',nc));
+  document.querySelectorAll('.flip-card').forEach(el=>{ el.style.background=t.lt?'rgba(0,0,0,0.08)':'rgba(255,255,255,0.08)'; });
+  document.querySelectorAll('.bit.on').forEach(el=>el.style.background=t.dot);
+  document.querySelectorAll('.bit.off').forEach(el=>el.style.background=t.text);
+}
+
+function setFace(f) {
+  S.face=f;
+  document.querySelectorAll('.face').forEach(el=>el.classList.remove('on'));
+  q('face-'+f).classList.add('on');
+  applyTheme(S.theme);
+}
+function tog12h() { S.h12=!S.h12; applyTheme(S.theme); }
+function togSec() {
+  S.secs=!S.secs;
+  q('fsep').style.display=S.secs?'':'none';
+  q('fsg').style.display=S.secs?'':'none';
+  q('bin-s-row').style.display=S.secs?'':'none';
+  applyTheme(S.theme);
+}
+function togSmooth() { S.smooth=!S.smooth; applyTheme(S.theme); }
+
+function rotHand(id,deg) { q(id).setAttribute('transform','rotate('+deg+',100,100)'); }
+function flipSet(cid,vid,v) {
+  const card=q(cid), val=q(vid);
+  if (val.textContent!==v) { val.textContent=v; card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop'); }
+}
+function setBits(row,n) {
+  const t=THEMES[S.theme];
+  for (let i=5; i>=0; i--) {
+    const el=q('b-'+row+'-'+i), on=!!(n&(1<<i));
+    el.className='bit '+(on?'on':'off');
+    el.style.background=on?t.dot:t.text;
+  }
+}
+
+const ONES=['','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+const TENS=['','','twenty','thirty','forty','fifty'];
+function numW(n) { return n<=20?ONES[n]:TENS[Math.floor(n/10)]+(n%10?'-'+ONES[n%10]:''); }
+function toWordTime(now) {
+  const h=now.getHours(), m=now.getMinutes();
+  const h12=h%12||12, nxt=(h%12+1)%12||12;
+  const hw=numW(h12), nw=numW(nxt);
+  const sfx=h<12?' in the morning':h<17?' in the afternoon':' in the evening';
+  if (m===0)  return 'It is '+hw+sfx;
+  if (m<5)    return 'It is just past '+hw;
+  if (m<10)   return 'It is five past '+hw;
+  if (m<15)   return 'It is ten past '+hw;
+  if (m<20)   return 'It is quarter past '+hw;
+  if (m<25)   return 'It is twenty past '+hw;
+  if (m<30)   return 'It is twenty-five past '+hw;
+  if (m<35)   return 'It is half past '+hw;
+  if (m<40)   return 'It is twenty-five to '+nw;
+  if (m<45)   return 'It is twenty to '+nw;
+  if (m<50)   return 'It is quarter to '+nw;
+  if (m<55)   return 'It is ten to '+nw;
+  return 'It is five to '+nw;
+}
+
+let tmr;
+function tick() {
+  const now=new Date();
+  const rh=now.getHours(), rm=now.getMinutes(), rs=now.getSeconds(), rms=now.getMilliseconds();
+  let dh=rh, ampm='';
+  if (S.h12) { ampm=rh>=12?'PM':'AM'; dh=rh%12||12; }
+  const hs=String(dh).padStart(2,'0'), ms=String(rm).padStart(2,'0'), ss=String(rs).padStart(2,'0');
+
+  let dtStr=hs+':'+ms; if (S.secs) dtStr+=':'+ss;
+  q('d-time').textContent=dtStr;
+  q('d-ampm').textContent=S.h12?ampm:(rh<12?'AM':'PM');
+  q('d-date').textContent=now.toLocaleDateString([],{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+
+  const fs=S.smooth?rs+rms/1000:rs, fm=rm+fs/60, fh=(rh%12)+fm/60;
+  rotHand('a-h',fh*30); rotHand('a-m',fm*6);
+  q('a-s').style.display=S.secs?'':'none';
+  if (S.secs) rotHand('a-s',fs*6);
+  q('a-date').textContent=now.toLocaleDateString([],{weekday:'long',month:'long',day:'numeric'});
+
+  flipSet('fc-h0','fv-h0',hs[0]); flipSet('fc-h1','fv-h1',hs[1]);
+  flipSet('fc-m0','fv-m0',ms[0]); flipSet('fc-m1','fv-m1',ms[1]);
+  flipSet('fc-s0','fv-s0',ss[0]); flipSet('fc-s1','fv-s1',ss[1]);
+  q('f-ampm').textContent=S.h12?ampm:'';
+
+  setBits('h',dh); setBits('m',rm); if (S.secs) setBits('s',rs);
+  q('bv-h').textContent=hs; q('bv-m').textContent=ms; q('bv-s').textContent=ss;
+
+  q('w-txt').textContent=toWordTime(now);
+  q('w-exact').textContent=hs+':'+ms+':'+ss+(S.h12?' '+ampm:'');
+
+  clearTimeout(tmr);
+  tmr=setTimeout(tick, S.smooth?50:1000-now.getTime()%1000+20);
+}
+
+setFace('digital');
+applyTheme(0);
+tick();
+</script>
+</body>
+</html>
