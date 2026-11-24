@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>buiniakou · Projects</title>
-<meta name="description" content="Projects and past work by buiniakou.">
+<title>Yahor Buiniakou · Design &amp; Projects</title>
+<meta name="description" content="Graphic design and web projects by Yahor Buiniakou.">
 <meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,12 +42,25 @@ body {
 }
 .wrap { max-width: 960px; margin: 0 auto; padding: 56px 24px 40px; }
 
-header { margin-bottom: 48px; }
+header { margin-bottom: 28px; }
 .hello { display: flex; align-items: center; gap: 14px; }
 .avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--chip); flex-shrink: 0; }
-h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
 .sub { color: var(--muted); font-size: 15px; }
-.intro { margin-top: 20px; max-width: 560px; color: var(--muted); font-size: 16px; }
+
+/* Tabs */
+.tabs {
+  display: inline-flex; gap: 4px; padding: 4px; margin-bottom: 32px;
+  background: var(--chip); border-radius: 999px; max-width: 100%;
+}
+.tabs a {
+  text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500;
+  padding: 8px 16px; border-radius: 999px; white-space: nowrap;
+}
+.tabs a[aria-selected="true"] { background: var(--card); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.panel[hidden] { display: none; }
+
+.intro { max-width: 560px; color: var(--muted); font-size: 16px; margin-bottom: 28px; }
 
 h2 {
   font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
@@ -70,9 +83,34 @@ section + section { margin-top: 44px; }
 }
 .links a.live { background: var(--accent); color: var(--bg); }
 .links a:hover { opacity: .85; }
-a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .earlier .card { background: transparent; }
+
+/* Design gallery */
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.work { margin: 0; min-width: 0; }
+.work button {
+  display: block; width: 100%; aspect-ratio: 1; padding: 0; border: 1px solid var(--line);
+  border-radius: 12px; overflow: hidden; background: #fff; cursor: zoom-in;
+}
+.work img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .25s; }
+.work button:hover img { transform: scale(1.03); }
+.work figcaption { font-size: 14px; margin-top: 8px; }
+.work figcaption span { display: block; color: var(--muted); font-size: 13px; }
+
+/* Lightbox */
+dialog {
+  border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh;
+  width: 100vw; height: 100vh; margin: 0;
+}
+dialog::backdrop { background: rgba(0,0,0,.88); }
+dialog[open] { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+dialog img { max-width: calc(100vw - 32px); max-height: calc(100vh - 110px); object-fit: contain; background: #fff; border-radius: 8px; }
+dialog p { color: #eee; font-size: 14px; margin-top: 12px; text-align: center; padding: 0 16px; }
+dialog .close {
+  position: fixed; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%;
+  border: 0; background: rgba(255,255,255,.15); color: #fff; font-size: 24px; line-height: 44px; cursor: pointer;
+}
 
 footer {
   margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
@@ -80,11 +118,15 @@ footer {
 }
 footer a { color: var(--muted); }
 
+@media (max-width: 720px) {
+  .gallery { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
 @media (max-width: 480px) {
   .wrap { padding: 36px 16px 32px; }
-  header { margin-bottom: 36px; }
   h1 { font-size: 24px; }
+  .tabs { margin-bottom: 24px; }
   .grid { grid-template-columns: 1fr; gap: 10px; }
+  .gallery { grid-template-columns: 1fr; gap: 20px; }
 }
 </style>
 </head>
@@ -94,89 +136,167 @@ footer a { color: var(--muted); }
     <div class="hello">
       <img class="avatar" src="https://avatars.githubusercontent.com/u/25943566?v=4&s=104" alt="" width="52" height="52">
       <div>
-        <h1>buiniakou</h1>
-        <div class="sub">Projects &amp; past work</div>
+        <h1>Yahor Buiniakou</h1>
+        <div class="sub">Graphic Designer &amp; Web Developer</div>
       </div>
     </div>
-    <p class="intro">Small web tools, maps and sites I've built. Each card links to the live page and its code.</p>
   </header>
 
-  <section>
-    <h2>Recent</h2>
-    <div class="grid">
-      <article class="card">
-        <h3>EV Image Prep</h3>
-        <p>Browser tool for prepping Everyday.Vegas article images.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/ev-image-prep/">Open</a><a href="https://github.com/buiniakou/ev-image-prep">Code</a></div>
-      </article>
-      <article class="card">
-        <h3>Car Meet Spots</h3>
-        <p>Interactive map of GTA V car meet spots.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/carmeet-map/">Open</a><a href="https://github.com/buiniakou/carmeet-map">Code</a></div>
-      </article>
-      <article class="card">
-        <h3>Lunch Ledger</h3>
-        <p>A simple tracker for lunches.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/lunch/">Open</a><a href="https://github.com/buiniakou/lunch">Code</a></div>
-      </article>
-      <article class="card">
-        <h3>Claude 2× Tracker</h3>
-        <p>Real-time check for Claude's off-peak window, when usage limits double.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/claude-tracker/">Open</a><a href="https://github.com/buiniakou/claude-tracker">Code</a></div>
-      </article>
-      <article class="card">
-        <h3>Exploring Out Loud</h3>
-        <p>Technical brief for the XOL site: architecture, content system, editors and REST API.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/XOL/">Open</a><a href="https://github.com/buiniakou/XOL">Code</a></div>
-      </article>
-      <article class="card">
-        <h3>Clock</h3>
-        <p>Full-screen clock with digital, analog, flip, binary and word faces.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/clock/">Open</a><a href="https://github.com/buiniakou/clock">Code</a></div>
-      </article>
-      <article class="card">
-        <h3>Work Progress</h3>
-        <p>Shows how far through the workday you are, hour by hour.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/time/">Open</a><a href="https://github.com/buiniakou/time">Code</a></div>
-      </article>
-      <article class="card">
-        <h3>Text Utilities</h3>
-        <p>Slug-to-title and case converter, with one-click copy.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/slug-2-title/">Open</a><a href="https://github.com/buiniakou/slug-2-title">Code</a></div>
-      </article>
-    </div>
-  </section>
+  <nav class="tabs" role="tablist">
+    <a href="#projects" id="tab-projects" role="tab" aria-controls="projects" aria-selected="true">Projects</a>
+    <a href="#design" id="tab-design" role="tab" aria-controls="design" aria-selected="false">Graphic Design</a>
+  </nav>
 
-  <section class="earlier">
-    <h2>Earlier work · 2019–2022</h2>
-    <div class="grid">
-      <article class="card">
-        <h3>Half Pipe Hippies</h3>
-        <p>Site for a skate shop: boards, trucks, wheels and apparel.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/hph/">Open</a><a href="https://github.com/buiniakou/hph">Code</a></div>
-      </article>
-      <article class="card">
-        <h3>Eco Tree</h3>
-        <p>Site for a shop selling wooden furniture and goods.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/ecotree/">Open</a><a href="https://github.com/buiniakou/ecotree">Code</a></div>
-      </article>
-      <article class="card">
-        <h3>Vegas Vortechs</h3>
-        <p>Site for a robotics team: lessons, gallery and contact.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/robotics/">Open</a><a href="https://github.com/buiniakou/robotics">Code</a></div>
-      </article>
-      <article class="card">
-        <h3>Capstone</h3>
-        <p>Progress site for a capstone project.</p>
-        <div class="links"><a class="live" href="https://buiniakou.github.io/capstone/">Open</a><a href="https://github.com/buiniakou/capstone">Code</a></div>
-      </article>
+  <!-- ============ PROJECTS ============ -->
+  <div class="panel" id="projects" role="tabpanel" aria-labelledby="tab-projects">
+    <p class="intro">Small web tools, maps and sites I've built. Each card links to the live page and its code.</p>
+
+    <section>
+      <h2>Recent</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>EV Image Prep</h3>
+          <p>Browser tool for prepping Everyday.Vegas article images.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/ev-image-prep/">Open</a><a href="https://github.com/buiniakou/ev-image-prep">Code</a></div>
+        </article>
+        <article class="card">
+          <h3>Car Meet Spots</h3>
+          <p>Interactive map of GTA V car meet spots.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/carmeet-map/">Open</a><a href="https://github.com/buiniakou/carmeet-map">Code</a></div>
+        </article>
+        <article class="card">
+          <h3>Lunch Ledger</h3>
+          <p>A simple tracker for lunches.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/lunch/">Open</a><a href="https://github.com/buiniakou/lunch">Code</a></div>
+        </article>
+        <article class="card">
+          <h3>Claude 2× Tracker</h3>
+          <p>Real-time check for Claude's off-peak window, when usage limits double.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/claude-tracker/">Open</a><a href="https://github.com/buiniakou/claude-tracker">Code</a></div>
+        </article>
+        <article class="card">
+          <h3>Exploring Out Loud</h3>
+          <p>Technical brief for the XOL site: architecture, content system, editors and REST API.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/XOL/">Open</a><a href="https://github.com/buiniakou/XOL">Code</a></div>
+        </article>
+        <article class="card">
+          <h3>Clock</h3>
+          <p>Full-screen clock with digital, analog, flip, binary and word faces.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/clock/">Open</a><a href="https://github.com/buiniakou/clock">Code</a></div>
+        </article>
+        <article class="card">
+          <h3>Work Progress</h3>
+          <p>Shows how far through the workday you are, hour by hour.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/time/">Open</a><a href="https://github.com/buiniakou/time">Code</a></div>
+        </article>
+        <article class="card">
+          <h3>Text Utilities</h3>
+          <p>Slug-to-title and case converter, with one-click copy.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/slug-2-title/">Open</a><a href="https://github.com/buiniakou/slug-2-title">Code</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="earlier">
+      <h2>Earlier work · 2019–2022</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Half Pipe Hippies</h3>
+          <p>Site for a skate shop: boards, trucks, wheels and apparel.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/hph/">Open</a><a href="https://github.com/buiniakou/hph">Code</a></div>
+        </article>
+        <article class="card">
+          <h3>Eco Tree</h3>
+          <p>Site for a shop selling wooden furniture and goods.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/ecotree/">Open</a><a href="https://github.com/buiniakou/ecotree">Code</a></div>
+        </article>
+        <article class="card">
+          <h3>Vegas Vortechs</h3>
+          <p>Site for a robotics team: lessons, gallery and contact.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/robotics/">Open</a><a href="https://github.com/buiniakou/robotics">Code</a></div>
+        </article>
+        <article class="card">
+          <h3>Capstone</h3>
+          <p>Progress site for a capstone project.</p>
+          <div class="links"><a class="live" href="https://buiniakou.github.io/capstone/">Open</a><a href="https://github.com/buiniakou/capstone">Code</a></div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ GRAPHIC DESIGN ============ -->
+  <div class="panel" id="design" role="tabpanel" aria-labelledby="tab-design" hidden>
+    <p class="intro">Logos, packaging, posters and illustration. Tap any piece to see it full size.</p>
+
+    <div class="gallery">
+      <figure class="work"><button data-full="design/coco-logo.jpg"><img src="design/thumbs/coco-logo.jpg" alt="Yahor's Coco logo" loading="lazy"></button><figcaption>Logo<span>Yahor's Coco</span></figcaption></figure>
+      <figure class="work"><button data-full="design/coco-packaging.jpg"><img src="design/thumbs/coco-packaging.jpg" alt="Yahor's Coco chocolate packaging and merch" loading="lazy"></button><figcaption>Packaging &amp; merch<span>Yahor's Coco</span></figcaption></figure>
+      <figure class="work"><button data-full="design/coco-infographic.png"><img src="design/thumbs/coco-infographic.png" alt="Yahor's Coco community infographic" loading="lazy"></button><figcaption>Community infographic<span>Yahor's Coco</span></figcaption></figure>
+
+      <figure class="work"><button data-full="design/primetime-logo-green.jpg"><img src="design/thumbs/primetime-logo-green.jpg" alt="Prime Time Van Lines logo in green" loading="lazy"></button><figcaption>Logo<span>Prime Time Van Lines</span></figcaption></figure>
+      <figure class="work"><button data-full="design/primetime-logo-sheet.jpg"><img src="design/thumbs/primetime-logo-sheet.jpg" alt="Prime Time Van Lines logo variations" loading="lazy"></button><figcaption>Logo explorations<span>Prime Time Van Lines</span></figcaption></figure>
+      <figure class="work"><button data-full="design/primetime-sketch-logo.png"><img src="design/thumbs/primetime-sketch-logo.png" alt="Prime Time Van Lines sketched logo" loading="lazy"></button><figcaption>Sketch logo<span>Prime Time Van Lines</span></figcaption></figure>
+
+      <figure class="work"><button data-full="design/vortechs-logo.png"><img src="design/thumbs/vortechs-logo.png" alt="Vegas Vortechs logo" loading="lazy"></button><figcaption>Logo<span>Vegas Vortechs</span></figcaption></figure>
+      <figure class="work"><button data-full="design/vortechs-tshirt.png"><img src="design/thumbs/vortechs-tshirt.png" alt="Vegas Vortechs T-shirt" loading="lazy"></button><figcaption>T-shirt<span>Vegas Vortechs</span></figcaption></figure>
+      <figure class="work"><button data-full="design/ecotree-logo-stacked.png"><img src="design/thumbs/ecotree-logo-stacked.png" alt="Eco Tree logo, stacked" loading="lazy"></button><figcaption>Logo, stacked<span>Eco Tree</span></figcaption></figure>
+
+      <figure class="work"><button data-full="design/ecotree-logo-wide.png"><img src="design/thumbs/ecotree-logo-wide.png" alt="Eco Tree logo, wide" loading="lazy"></button><figcaption>Logo, wide<span>Eco Tree</span></figcaption></figure>
+      <figure class="work"><button data-full="design/educative-action-1.jpg"><img src="design/thumbs/educative-action-1.jpg" alt="Educative Action poster on military and school funding" loading="lazy"></button><figcaption>Poster 1<span>Educative Action</span></figcaption></figure>
+      <figure class="work"><button data-full="design/educative-action-2.jpg"><img src="design/thumbs/educative-action-2.jpg" alt="Educative Action poster on the CCSD budget" loading="lazy"></button><figcaption>Poster 2<span>Educative Action</span></figcaption></figure>
+
+      <figure class="work"><button data-full="design/vitamin-8.jpg"><img src="design/thumbs/vitamin-8.jpg" alt="Vitamin 8 drink poster" loading="lazy"></button><figcaption>Drink poster<span>Vitamin 8</span></figcaption></figure>
+      <figure class="work"><button data-full="design/typographer-poster.jpg"><img src="design/thumbs/typographer-poster.jpg" alt="Typographer career poster" loading="lazy"></button><figcaption>Typographer poster<span>Typography</span></figcaption></figure>
+      <figure class="work"><button data-full="design/bbq-rub-label.png"><img src="design/thumbs/bbq-rub-label.png" alt="Chicken BBQ Rub label" loading="lazy"></button><figcaption>Chicken BBQ Rub label<span>Packaging</span></figcaption></figure>
+
+      <figure class="work"><button data-full="design/snowboard-cover.jpg"><img src="design/thumbs/snowboard-cover.jpg" alt="Snowboard game cover illustration" loading="lazy"></button><figcaption>Snowboard game cover<span>Fan art</span></figcaption></figure>
+      <figure class="work"><button data-full="design/cliff-sunset.jpg"><img src="design/thumbs/cliff-sunset.jpg" alt="Flat illustration of two figures on a cliff at sunset" loading="lazy"></button><figcaption>Cliff sunset<span>Illustration</span></figcaption></figure>
+      <figure class="work"><button data-full="design/skateboarder.jpg"><img src="design/thumbs/skateboarder.jpg" alt="Skateboarder holding a board overhead on green" loading="lazy"></button><figcaption>Skateboarder<span>Photo edit</span></figcaption></figure>
+
+      <figure class="work"><button data-full="design/faded-portrait.jpg"><img src="design/thumbs/faded-portrait.jpg" alt="Faded portrait in a cap" loading="lazy"></button><figcaption>Faded portrait<span>Photo edit</span></figcaption></figure>
+      <figure class="work"><button data-full="design/vintage-photo.jpg"><img src="design/thumbs/vintage-photo.jpg" alt="Vintage press photo scan" loading="lazy"></button><figcaption>Vintage photo<span>Scan</span></figcaption></figure>
     </div>
-  </section>
+  </div>
 
   <footer>
-    <span>buiniakou</span>
+    <span>Yahor Buiniakou</span>
     <a href="https://github.com/buiniakou">github.com/buiniakou</a>
   </footer>
 </div>
+
+<dialog id="viewer" aria-label="Full-size image">
+  <button class="close" aria-label="Close">×</button>
+  <img alt="">
+  <p></p>
+</dialog>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.tabs a');
+  function show(id) {
+    if (id !== 'design') id = 'projects';
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('aria-controls') === id;
+      t.setAttribute('aria-selected', on);
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  window.addEventListener('hashchange', function () { show(location.hash.slice(1)); });
+  show(location.hash.slice(1));
+
+  var dlg = document.getElementById('viewer');
+  var big = dlg.querySelector('img'), cap = dlg.querySelector('p');
+  document.querySelectorAll('.work button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var img = b.querySelector('img'), fc = b.nextElementSibling;
+      big.src = b.dataset.full; big.alt = img.alt;
+      cap.textContent = fc.firstChild.textContent + ' · ' + fc.querySelector('span').textContent;
+      dlg.showModal();
+    });
+  });
+  dlg.addEventListener('click', function (e) { if (e.target !== big) dlg.close(); });
+  dlg.addEventListener('close', function () { big.removeAttribute('src'); });
+})();
+</script>
 </body>
 </html>
