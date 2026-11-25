@@ -143,12 +143,12 @@ footer a { color: var(--muted); }
   </header>
 
   <nav class="tabs" role="tablist">
-    <a href="#projects" id="tab-projects" role="tab" aria-controls="projects" aria-selected="true">Projects</a>
-    <a href="#design" id="tab-design" role="tab" aria-controls="design" aria-selected="false">Graphic Design</a>
+    <a href="#projects" id="tab-projects" role="tab" aria-controls="panel-projects" aria-selected="true">Projects</a>
+    <a href="#design" id="tab-design" role="tab" aria-controls="panel-design" aria-selected="false">Graphic Design</a>
   </nav>
 
   <!-- ============ PROJECTS ============ -->
-  <div class="panel" id="projects" role="tabpanel" aria-labelledby="tab-projects">
+  <div class="panel" id="panel-projects" role="tabpanel" aria-labelledby="tab-projects">
     <p class="intro">Small web tools, maps and sites I've built. Each card links to the live page and its code.</p>
 
     <section>
@@ -225,7 +225,7 @@ footer a { color: var(--muted); }
   </div>
 
   <!-- ============ GRAPHIC DESIGN ============ -->
-  <div class="panel" id="design" role="tabpanel" aria-labelledby="tab-design" hidden>
+  <div class="panel" id="panel-design" role="tabpanel" aria-labelledby="tab-design" hidden>
     <p class="intro">Logos, packaging, posters and illustration. Tap any piece to see it full size.</p>
 
     <div class="gallery">
@@ -274,7 +274,7 @@ footer a { color: var(--muted); }
 (function () {
   var tabs = document.querySelectorAll('.tabs a');
   function show(id) {
-    if (id !== 'design') id = 'projects';
+    id = id === 'design' ? 'panel-design' : 'panel-projects';
     tabs.forEach(function (t) {
       var on = t.getAttribute('aria-controls') === id;
       t.setAttribute('aria-selected', on);
